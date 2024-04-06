@@ -3,3 +3,5 @@ version: 1
 client_bind_to_ipv4:
     - 127.0.0.2
 ca_file: tests/keys/server.crt
+grace_period_seconds: 3
+graceful_shutdown_timeout_seconds: 3

@@ -17,7 +17,7 @@ use bytes::Bytes;
 use http::{Response, StatusCode};
 use log::debug;
 use once_cell::sync::Lazy;
-use pingora_timeout::timeout;
+use pingora_timeout::{sleep, timeout};
 use prometheus::{register_int_counter, IntCounter};
 use std::sync::Arc;
 use std::time::Duration;
@@ -77,6 +77,10 @@ impl ServeHttp for HttpEchoApp {
                 panic!("Timed out after {:?}ms", read_timeout);
             }
         };
+
+        if REQ_COUNTER.get() % 2 == 1 {
+            sleep(Duration::from_millis(2000)).await;
+        }
 
         Response::builder()
             .status(StatusCode::OK)
